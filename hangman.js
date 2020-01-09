@@ -18,32 +18,59 @@ const WORD = 'christmas'
 
 document.addEventListener('DOMContentLoaded', () => {
 
-	document.addEventListener('keyup', onGuess)
-	const characters = WORD.split('')
-	console.log()
-	game.cloak()
-	document.getElementById('displayWord').innerText = game.displayWord.join(' ')
+	let game = new Game(WORD)
+	document.addEventListener('keyup', (e) => game.onGuess(e))
+	
 
 })
 
-const game = {
-	word: WORD,
-	guesses: [],
-	incorrectGuesses: [],
-	guessesRemaining: 6,
-	correctGuesses:[],
-	displayWord: [],
-	cloak: function() {
-		this.displayWord =  '_'.repeat(this.word.length).split('')
+class Game {
+	constructor(word) {
+		this.word = word
+		this.characters = word.split('')
+		this.incorrectGuesses = []
+		this.displayWord = []
+		this.guessesRemaining = 6
+		this.guesses = []
+		// this.difficulty = difficulty
+		this.cloak()
 	}
-	// onGuess: function(guess) {
-
-	// }
+	cloak() {
+		this.displayWord =  '_'.repeat(this.word.length).split('')
+		document.getElementById('displayWord').innerText = this.displayWord.join(' ')
+	}
+	onGuess(e) {
+		if(e.keyCode < 65 || e.keyCode > 90) return //eventually check for remaining guesses and duplicates
+		let letter = e.key
+		this.guessesRemaining--
+		console.log(this)
+		this.guesses.push(letter)
+	}
 }
 
-const onGuess = (e) => {
-	if(e.keyCode < 65 || e.keyCode > 90) return
-	let letter = e.key
-	game.guessesRemaining--
-	game.guesses.push(letter)
-}
+// const game = {
+// 	word: WORD,
+// 	guesses: [],
+// 	incorrectGuesses: [],
+// 	guessesRemaining: 6,
+// 	correctGuesses:[],
+// 	displayWord: [],
+// 	cloak: function() {
+// 		this.displayWord =  '_'.repeat(this.word.length).split('')
+// 	},
+// 	onGuess: function(guess) {
+
+// 	}
+
+// 	/*
+// 		compare guesses with word's letters
+
+// 	*/
+// }
+
+// const onGuess = (e) => {
+// 	if(e.keyCode < 65 || e.keyCode > 90) return
+// 	let letter = e.key
+// 	game.guessesRemaining--
+// 	game.guesses.push(letter)
+// }
